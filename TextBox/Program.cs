@@ -24,7 +24,7 @@ namespace TextBox
         }
         static void TextChange(string oldText, string newText)
         {
-            Console.WriteLine($"Текст был изменен с {oldText} на {newText}");
+            Console.WriteLine($"Текст поля был изменен с {oldText} на {newText}");
         }
     }
 }
