@@ -42,7 +42,6 @@ namespace TextBox
         public void Output()
         {
             Console.ForegroundColor = Color;
-            Console.BackgroundColor = ConsoleColor.DarkBlue;
             Console.WriteLine(text);
             Console.ResetColor();
         }
