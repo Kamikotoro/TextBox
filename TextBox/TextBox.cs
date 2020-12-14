@@ -9,11 +9,18 @@ namespace TextBox
         public delegate void TextChanged(string oldText, string newText);
         public static TextChanged TextUpdated;
         private string text;
-        private ConsoleColor Color = ConsoleColor.White;
+        private ConsoleColor color = default;
         public ConsoleColor FontColor
         {
-            get => Color;
-            set => Color = value;
+            get => color;
+            set 
+            {
+                color = value;
+                if ((int)color == 16)
+                {
+                    color = 0;
+                }
+            }
         }
         public string Text
         {
@@ -32,16 +39,16 @@ namespace TextBox
         }
         public TextBox(string text, ConsoleColor fontColor) : this(text)
         {
-            this.Color = fontColor;
+            this.color = fontColor;
         }
        
         public void Clear()
         {
-            text = "";
+            Text = "";
         }
         public void Output()
         {
-            Console.ForegroundColor = Color;
+            Console.ForegroundColor = color;
             Console.WriteLine(text);
             Console.ResetColor();
         }

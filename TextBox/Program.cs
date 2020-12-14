@@ -6,25 +6,55 @@ namespace TextBox
     {
         static void Main(string[] args)
         {
-            TextBox tBox = new TextBox("лол", ConsoleColor.Blue);
+
+            TextBox tBox = new TextBox("", ConsoleColor.Blue);
             TextBox.TextUpdated = TextChange;
-            while(true)
+            while (true)
             {
-                tBox.Text = Console.ReadLine();
-                tBox.Output();
-                if (tBox.Text == "quit")
+
+                ConsoleKeyInfo Key = Console.ReadKey();
+                ConsoleKey KeyPressed = Key.Key;
+                Console.Clear();
+                if (KeyPressed == ConsoleKey.Escape)
                 {
                     break;
                 }
-                else if (Enum.TryParse(tBox.Text,out ConsoleColor color))
+                else if (KeyPressed == ConsoleKey.OemPlus)
                 {
-                    tBox.FontColor = color;
+                    tBox.FontColor++;
+                    Console.WriteLine($"\nЦвет текста изменен на \"{tBox.FontColor}\"\n");
+                    tBox.Output();
+                    continue;
                 }
+                else if (KeyPressed == ConsoleKey.Backspace)
+                {
+                    if (tBox.Text.Length != 0)
+                    {
+                        tBox.Text = tBox.Text.Remove(tBox.Text.Length - 1);
+                    }
+                    //tBox.Text = tBox.Text.TrimEnd(tBox.Text[tBox.Text.Length - 1]);
+                    tBox.Output();
+                    continue;
+                }
+                else if (KeyPressed == ConsoleKey.Enter)
+                {
+                    continue;
+                }
+                else if (KeyPressed == ConsoleKey.Delete)
+                {
+                    tBox.Clear();
+                }
+                tBox.Text += Key.KeyChar;
+                tBox.Output();
+
             }
         }
         static void TextChange(string oldText, string newText)
         {
-            Console.WriteLine($"Текст поля был изменен с {oldText} на {newText}");
+            Console.WriteLine($"\nТекст поля был изменен " +
+                $"\n с \"{oldText}\" " +
+                $"\n на \"{newText}\"");
+
         }
     }
 }
