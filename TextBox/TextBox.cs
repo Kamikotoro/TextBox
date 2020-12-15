@@ -6,10 +6,14 @@ namespace TextBox
 {
     public class TextBox
     {
-        public delegate void TextChanged(string oldText, string newText);
-        public static TextChanged TextUpdated;
+
+        public Action<string,string> TextUpdated;
+        public Action<ConsoleColor> ColorUpdated;
+        public Action<ConsoleColor> BackgroundColorUpdated;
+
         private string text;
         private ConsoleColor color = default;
+        private ConsoleColor backgroundColor = default;
         public ConsoleColor FontColor
         {
             get => color;
@@ -20,8 +24,23 @@ namespace TextBox
                 {
                     color = 0;
                 }
+                ColorUpdated?.Invoke(value);
             }
         }
+        public ConsoleColor BackColor
+        {
+            get => backgroundColor;
+            set
+            {
+                backgroundColor = value;
+                if ((int)backgroundColor == 16)
+                {
+                    backgroundColor = 0;
+                }
+                BackgroundColorUpdated?.Invoke(value);
+            }
+        }
+
         public string Text
         {
             get => text;
@@ -41,7 +60,11 @@ namespace TextBox
         {
             this.color = fontColor;
         }
-       
+        public TextBox(string text, ConsoleColor fontColor,ConsoleColor backgroundColor) : this(text)
+        {
+            this.backgroundColor = backgroundColor;
+        }
+
         public void Clear()
         {
             Text = "";
