@@ -12,18 +12,13 @@ namespace TextBox
             
             List<TextBox> tBoxes = new List<TextBox>();
             tBoxes.Add(tBox);
-            tBoxes.Add(tBox2);
             
             Action Update;
             Update = tBox.Output;
-            Update += tBox2.Output;
 
             tBox.TextUpdated = (oldText, newText) => Console.WriteLine($"\nТекст поля 1 был изменен\n с \"{oldText}\"\n на \"{newText}\"");
-            tBox.ColorUpdated = color => Console.WriteLine($"\nЦвет текста поля 1 изменен на \"{tBox.FontColor}\"\n");
-
-            tBox2.TextUpdated = (oldText, newText) => Console.WriteLine($"\nТекст поля 2 был изменен\n с \"{oldText}\"\n на \"{newText}\"");
-            tBox2.ColorUpdated = color => Console.WriteLine($"\nЦвет текста поля 2 изменен на \"{tBox2.FontColor}\"\n");
-
+            tBox.ColorUpdated = color => Console.WriteLine($"\nЦвет текста поля 1 изменен на \"{color}\"\n");
+            tBox.BackgroundColorUpdated = color => Console.WriteLine($"\nЦвет фона поля 1 изменен на \"{color}\"\n");
             int i = 0;
 
             while (true)
@@ -39,6 +34,12 @@ namespace TextBox
                 else if (keyPressed == ConsoleKey.OemPlus)
                 {
                     tBoxes[i].FontColor++;
+                    Update?.Invoke();
+                    continue;
+                }
+                else if (keyPressed == ConsoleKey.OemMinus)
+                {
+                    tBoxes[i].BackColor++;
                     Update?.Invoke();
                     continue;
                 }
@@ -74,6 +75,7 @@ namespace TextBox
                         Update += tBoxes[i].Output;
                         tBoxes[i].ColorUpdated = color => Console.WriteLine($"\nЦвет текста поля {i+1} изменен на \"{tBoxes[i].FontColor}\"\n");
                         tBoxes[i].TextUpdated = (oldText, newText) => Console.WriteLine($"\nТекст поля {i+1} был изменен\n с \"{oldText}\"\n на \"{newText}\"");
+                        tBoxes[i].BackgroundColorUpdated = color => Console.WriteLine($"\nЦвет фона поля 1 изменен на \"{color}\"\n");
                     }
                     Update?.Invoke();
                     continue;

@@ -72,6 +72,7 @@ namespace TextBox
         public void Output()
         {
             Console.ForegroundColor = color;
+            Console.BackgroundColor = backgroundColor;
             Console.WriteLine(text);
             Console.ResetColor();
         }
