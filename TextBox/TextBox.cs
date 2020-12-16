@@ -7,9 +7,9 @@ namespace TextBox
     public class TextBox
     {
 
-        public Action<string,string> TextUpdated;
-        public Action<ConsoleColor> ColorUpdated;
-        public Action<ConsoleColor> BackgroundColorUpdated;
+        public event EventHandler<TextChangedEventArgs> TextUpdated;
+        public event EventHandler<ConsoleColor> ColorUpdated;
+        public event EventHandler<ConsoleColor> BackgroundColorUpdated;
 
         private string text;
         private ConsoleColor color = default;
@@ -24,7 +24,7 @@ namespace TextBox
                 {
                     color = 0;
                 }
-                ColorUpdated?.Invoke(value);
+                ColorUpdated?.Invoke(this,value);
             }
         }
         public ConsoleColor BackColor
@@ -37,7 +37,7 @@ namespace TextBox
                 {
                     backgroundColor = 0;
                 }
-                BackgroundColorUpdated?.Invoke(value);
+                BackgroundColorUpdated?.Invoke(this,value);
             }
         }
 
@@ -48,7 +48,7 @@ namespace TextBox
             {
                 string oldText = text;
                 text = value;
-                TextUpdated?.Invoke(oldText, value);
+                TextUpdated?.Invoke(this,new TextChangedEventArgs(oldText,value));
             }
         }
 
@@ -75,6 +75,21 @@ namespace TextBox
             Console.BackgroundColor = backgroundColor;
             Console.WriteLine(text);
             Console.ResetColor();
+        }
+
+        public class TextChangedEventArgs:EventArgs
+        {
+            string oldText;
+            string newText;
+
+            public string OldText => oldText;
+            public string NewText => newText;
+
+            public TextChangedEventArgs(string eOldText,string eNewText)
+            {
+                oldText = eOldText;
+                newText = eNewText;
+            }
         }
     }
 }

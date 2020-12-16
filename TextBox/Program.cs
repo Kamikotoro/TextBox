@@ -16,9 +16,9 @@ namespace TextBox
             Action Update;
             Update = tBox.Output;
 
-            tBox.TextUpdated = (oldText, newText) => Console.WriteLine($"\nТекст поля 1 был изменен\n с \"{oldText}\"\n на \"{newText}\"");
-            tBox.ColorUpdated = color => Console.WriteLine($"\nЦвет текста поля 1 изменен на \"{color}\"\n");
-            tBox.BackgroundColorUpdated = color => Console.WriteLine($"\nЦвет фона поля 1 изменен на \"{color}\"\n");
+            tBox.TextUpdated += (sender, e) => Console.WriteLine($"\nТекст поля {1} был изменен\n с \"{e.OldText}\"\n на \"{e.NewText}\"");
+            tBox.ColorUpdated += (sender,color) => Console.WriteLine($"\nЦвет текста поля 1 изменен на \"{color}\"\n");
+            tBox.BackgroundColorUpdated += (sender, color) => Console.WriteLine($"\nЦвет фона поля 1 изменен на \"{color}\"\n");
             int i = 0;
 
             while (true)
@@ -62,7 +62,7 @@ namespace TextBox
                 {
                     tBoxes[i].Clear();
                 }
-                else if (keyPressed == ConsoleKey.UpArrow)
+                else if (keyPressed == ConsoleKey.DownArrow)
                 {
                     if (!(i + 1 >= tBoxes.Count))
                     {
@@ -73,14 +73,14 @@ namespace TextBox
                         i++;
                         tBoxes.Add(new TextBox(""));
                         Update += tBoxes[i].Output;
-                        tBoxes[i].ColorUpdated = color => Console.WriteLine($"\nЦвет текста поля {i+1} изменен на \"{tBoxes[i].FontColor}\"\n");
-                        tBoxes[i].TextUpdated = (oldText, newText) => Console.WriteLine($"\nТекст поля {i+1} был изменен\n с \"{oldText}\"\n на \"{newText}\"");
-                        tBoxes[i].BackgroundColorUpdated = color => Console.WriteLine($"\nЦвет фона поля 1 изменен на \"{color}\"\n");
+                        tBoxes[i].ColorUpdated += (sender, color) => Console.WriteLine($"\nЦвет текста поля {i+1} изменен на \"{tBoxes[i].FontColor}\"\n");
+                        tBoxes[i].TextUpdated += (sende,e) => Console.WriteLine($"\nТекст поля {i+1} был изменен\n с \"{e.OldText}\"\n на \"{e.NewText}\"");
+                        tBoxes[i].BackgroundColorUpdated += (sender, color) => Console.WriteLine($"\nЦвет фона поля {i+1} изменен на \"{color}\"\n");
                     }
                     Update?.Invoke();
                     continue;
                 }
-                else if (keyPressed == ConsoleKey.DownArrow)
+                else if (keyPressed == ConsoleKey.UpArrow)
                 {
                     if (!(i - 1 < 0))
                     {
